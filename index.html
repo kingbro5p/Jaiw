@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="bn" id="html-root">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Media Downloader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #1f4068, #162447, #1b1b2f);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-color: #fff;
+            --subtext-color: #a7a9be;
+            --input-bg: rgba(255, 255, 255, 0.07);
+            --input-border: rgba(255, 255, 255, 0.15);
+            --accent-color: #00adb5;
+        }
+
+        [data-theme="light"] {
+            --bg-gradient: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --text-color: #2b2d42;
+            --subtext-color: #4a4e69;
+            --input-bg: rgba(0, 0, 0, 0.04);
+            --input-border: rgba(0, 0, 0, 0.1);
+            --accent-color: #0077b6;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: background 0.3s, color 0.3s; }
+        
+        body {
+            background: var(--bg-gradient);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            padding: 25px 20px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .top-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .control-btn {
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-color);
+            padding: 5px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .control-btn:hover { border-color: var(--accent-color); }
+
+        .logo-icon { font-size: 32px; color: var(--accent-color); margin-bottom: 3px; }
+        h2 { font-size: 20px; margin-bottom: 2px; }
+        p.subtitle { font-size: 11px; color: var(--subtext-color); margin-bottom: 12px; }
+        .platforms { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; font-size: 15px; color: var(--subtext-color); }
+
+        .input-group { margin-bottom: 12px; }
+        input[type="text"] {
+            width: 100%; padding: 10px 14px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 10px; color: var(--text-color); font-size: 13px; outline: none;
+        }
+        input[type="text"]::placeholder { color: var(--subtext-color); opacity: 0.7; }
+        input[type="text"]:focus { border-color: var(--accent-color); }
+
+        button.submit-btn {
+            width: 100%; background: linear-gradient(135deg, var(--accent-color), #005f73);
+            color: white; border: none; padding: 10px; border-radius: 10px;
+            cursor: pointer; font-size: 13px; font-weight: 600;
+        }
+        button.submit-btn:hover { opacity: 0.9; }
+
+        .preview-card {
+            margin-top: 15px; background: var(--input-bg);
+            padding: 12px; border-radius: 12px; text-align: left;
+            border: 1px solid var(--border-color);
+        }
+        
+        .channel-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .channel-info img {
+            width: 35px; height: 35px; border-radius: 50%; object-fit: cover;
+            border: 1px solid var(--accent-color);
+        }
+        .channel-details h5 {
+            font-size: 13px; color: var(--text-color); font-weight: 600;
+        }
+        .channel-details span {
+            font-size: 11px; color: var(--subtext-color); display: flex; align-items: center; gap: 4px;
+        }
+
+        .video-thumbnail {
+            width: 100%; height: 140px; object-fit: cover; border-radius: 8px; margin-bottom: 8px;
+        }
+        .preview-card h4 { font-size: 12px; margin-bottom: 10px; color: var(--text-color); line-height: 1.3; }
+
+        .result-box { margin-top: 12px; padding: 10px; border-radius: 10px; background: var(--input-bg); }
+        .success p { color: #2ec4b6; font-size: 11px; margin-bottom: 6px; font-weight: 500; }
+        .error p { color: #e71d36; font-size: 11px; font-weight: 500; }
+        
+        button.download-btn {
+            background: linear-gradient(135deg, #2ec4b6, #25a18e);
+            color: #fff; border: none; padding: 9px; border-radius: 8px;
+            cursor: pointer; font-weight: 600; font-size: 12px; width: 100%;
+        }
+
+        .lang-en { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="top-controls">
+            <button class="control-btn" onclick="toggleTheme()" id="theme-btn">
+                <i class="fa-solid fa-moon" id="theme-icon"></i> <span id="theme-text">Dark</span>
+            </button>
+            <button class="control-btn" onclick="toggleLanguage()">
+                <i class="fa-solid fa-globe"></i> <span id="lang-text">English</span>
+            </button>
+        </div>
+
+        <div class="logo-icon"><i class="fa-solid fa-cloud-arrow-down"></i></div>
+        <h2>
+            <span class="lang-bn">মিডিয়া ডাউনলোডার</span>
+            <span class="lang-en">Media Downloader</span>
+        </h2>
+        <p class="subtitle">
+            <span class="lang-bn">ইউটিউব, টিকটক, ফেসবুক, ইনস্টাগ্রাম সেভার</span>
+            <span class="lang-en">YouTube, TikTok, Facebook, Instagram Saver</span>
+        </p>
+
+        <div class="platforms">
+            <i class="fa-brands fa-youtube"></i>
+            <i class="fa-brands fa-tiktok"></i>
+            <i class="fa-brands fa-facebook"></i>
+            <i class="fa-brands fa-instagram"></i>
+        </div>
+
+        {% if not preview and not success_bn and not success_en %}
+        <form method="POST">
+            <input type="hidden" name="action" value="preview">
+            <div class="input-group">
+                <input type="text" name="url" placeholder="এখানে ভিডিওর লিংক পেস্ট করুন..." class="url-input" required autocomplete="off">
+            </div>
+            <button type="submit" class="submit-btn">
+                <span class="lang-bn">প্রিভিউ দেখুন</span>
+                <span class="lang-en">Fetch Preview</span>
+            </button>
+        </form>
+        {% endif %}
+
+        {% if preview %}
+        <div class="preview-card">
+            <div class="channel-info">
+                <img src="{{ channel_thumb }}" alt="Channel">
+                <div class="channel-details">
+                    <h5>{{ uploader }}</h5>
+                    <span><i class="fa-solid fa-eye"></i> {{ views }} views</span>
+                </div>
+            </div>
+
+            <img src="{{ thumbnail }}" alt="Thumbnail" class="video-thumbnail">
+            <h4>{{ title }}</h4>
+
+            <form method="POST">
+                <input type="hidden" name="action" value="download">
+                <input type="hidden" name="url" value="{{ url }}">
+                <button type="submit" class="download-btn">
+                    <i class="fa-solid fa-download"></i> 
+                    <span class="lang-bn">কনফার্ম ও ডাউনলোড করুন</span>
+                    <span class="lang-en">Confirm & Download</span>
+                </button>
+            </form>
+        </div>
+        {% endif %}
+
+        {% if success_bn or success_en %}
+            <div class="result-box success">
+                <p><i class="fa-solid fa-circle-check"></i> 
+                    <span class="lang-bn">{{ success_bn }}</span>
+                    <span class="lang-en">{{ success_en }}</span>
+                </p>
+                <a href="/download/{{ filename }}" download>
+                    <button class="download-btn"><i class="fa-solid fa-file-arrow-down"></i> 
+                        <span class="lang-bn">ফাইল সেভ করুন</span>
+                        <span class="lang-en">Save File</span>
+                    </button>
+                </a>
+            </div>
+        {% endif %}
+
+        {% if error_bn or error_en %}
+            <div class="result-box error">
+                <p><i class="fa-solid fa-circle-exclamation"></i> 
+                    <span class="lang-bn">{{ error_bn }}</span>
+                    <span class="lang-en">{{ error_en }}</span>
+                </p>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        let currentLang = 'bn';
+        let currentTheme = 'dark';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'bn' ? 'en' : 'bn';
+            document.getElementById('lang-text').innerText = currentLang === 'bn' ? 'English' : 'বাংলা';
+            
+            document.querySelectorAll('.lang-bn').forEach(el => el.style.display = currentLang === 'bn' ? 'inline' : 'none');
+            document.querySelectorAll('.lang-en').forEach(el => el.style.display = currentLang === 'en' ? 'inline' : 'none');
+            
+            document.querySelectorAll('.url-input').forEach(input => {
+                input.placeholder = currentLang === 'bn' ? 'এখানে ভিডিওর লিংক পেস্ট করুন...' : 'Paste video link here...';
+            });
+        }
+
+        function toggleTheme() {
+            const root = document.getElementById('html-root');
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+
+            if (currentTheme === 'dark') {
+                root.setAttribute('data-theme', 'light');
+                currentTheme = 'light';
+                themeIcon.className = 'fa-solid fa-sun';
+                themeText.innerText = 'Light';
+            } else {
+                root.removeAttribute('data-theme');
+                currentTheme = 'dark';
+                themeIcon.className = 'fa-solid fa-moon';
+                themeText.innerText = 'Dark';
+            }
+        }
+
+        currentLang = 'en';
+        toggleLanguage();
+    </script>
+</body>
+</html>
